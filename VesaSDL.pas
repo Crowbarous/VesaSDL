@@ -121,6 +121,8 @@ Interface
  {Graphics primitives}
   Procedure SetColorRGBA(r,g,b,a:integer);{Set color for graphics primitives}
   Procedure SetColor(q:integer);{Same, but color sets in old module vesa palette}
+  procedure setcolor32 (c : uint32);
+  
   Procedure PutPixelRGBA(x,y,r,g,b,a:integer);
   Procedure PutPixel(x,y,c:integer);
   Procedure Line(x1,y1,x2,y2:integer);
@@ -272,6 +274,16 @@ Implementation
      buttonTextureName,windowTextureName,labelTextureName,editTextureName:ansistring;
      debug:boolean;
      shadowMode:byte;
+
+procedure setcolor32 (c : tcolor);
+begin
+  
+  color := c;
+  sdl_setrenderdrawcolor(render, c.r, c.g, c.b, c.a);
+  
+end;
+
+
 procedure setcolorRGBA(r,g,b,a:integer);
  begin
   color.r:=r;
