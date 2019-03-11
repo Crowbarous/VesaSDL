@@ -248,65 +248,53 @@ implementation
 
 procedure InputUpdate;
 var
-	p, p1 : plongint;
-	event : pSDL_Event;
+	event : tSDL_Event;
 begin
-	new(event);
-	
-	if (SDL_PollEvent(event) = 1) then begin
+	if (SDL_PollEvent(@event) = 1) then begin
 		
-		if (event^.type_ = SDL_QUITEV) then begin
+		if (event.type_ = SDL_QUITEV) then begin
 			
 			sdl_quit;
 			halt(0);
 		end;
 		
-		if (event^.type_ = sdl_mousemotion) then begin
+		if (event.type_ = sdl_mousemotion) then begin
 			
-			new(p);
-			new(p1);
-			
-			sdl_getmousestate(p,p1);
-			
-			mousex:=p^;
-			mousey:=p1^;
-			
-			dispose(p);
-			dispose(p1);
+			sdl_getmousestate(@mousex, @mousey);
 		end;
 		
-		if (event^.type_ = SDL_MouseButtonDown) then begin
+		if (event.type_ = SDL_MouseButtonDown) then begin
 			
 			if (countmousebuttonspressed = 0) then
-				mousebutton := event^.button.button;
+				mousebutton := event.button.button;
 			
 			if (countmousebuttonspressed > 0) then
-				mousebutton += event^.button.button + 1;
+				mousebutton += event.button.button + 1;
 			
 			inc(countmousebuttonspressed);
 		end;
 		
-		if (event^.type_ = SDL_MouseButtonUp) then begin
+		if (event.type_ = SDL_MouseButtonUp) then begin
 			
 			if ((countmousebuttonspressed = 1) or (countmousebuttonspressed = 3)) then
-				mousebutton -= event^.button.button;
+				mousebutton -= event.button.button;
 			
 			if (countmousebuttonspressed = 2) then
-				mousebutton -= event^.button.button - 1;
+				mousebutton -= event.button.button - 1;
 			
 			dec(countmousebuttonspressed);
 		end;
 		
-		if (event^.type_ = sdl_keydown) then begin
+		if (event.type_ = sdl_keydown) then begin
 			
-			lastkey.key := event^.key.keysym;
+			lastkey.key := event.key.keysym;
 			lastkey.mod_ := sdl_getmodstate;
 		end;
 		
-		if (Event^.type_ = SDL_MOUSEWHEEL) then begin
+		if (event.type_ = SDL_MOUSEWHEEL) then begin
 		
-			mouseScrollHor := Event^.wheel.x;
-			mouseScrollVert := event^.wheel.y;
+			mouseScrollHor := event.wheel.x;
+			mouseScrollVert := event.wheel.y;
 			
 		end else begin
 			
@@ -314,8 +302,6 @@ begin
 			mouseScrollVert:=0;
 		end;
 	end;
-	
-	dispose(event);
 end;
 
 

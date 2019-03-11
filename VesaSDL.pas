@@ -518,34 +518,26 @@ end;
 
 procedure SetWSize (x1, y1, x2, y2 : integer);
 var
-	tmp : pSDL_Rect;
+	tmp : tSDL_Rect;
 begin
-	new(tmp);
+	tmp.x := x1;
+	tmp.y := y1;
+	tmp.w := x2 - x1;
+	tmp.h := y2 - y1;
 	
-	tmp^.x := x1;
-	tmp^.y := y1;
-	tmp^.w := x2 - x1;
-	tmp^.h := y2 - y1;
-	
-	SDL_RenderSetViewPort(render, tmp);
-	
-	dispose(tmp);
+	SDL_RenderSetViewPort(render, @tmp);
 end;
  
 procedure GetWSize (var x1, y1, x2, y2 : integer);
 var
-	tmp : pSDL_Rect;
+	tmp : tSDL_Rect;
 begin
-	new(tmp);
+	SDL_RenderGetViewPort(render, @tmp);
 	
-	SDL_RenderGetViewPort(render, tmp);
-	
-	x1 := tmp^.x;
-	y1 := tmp^.y;
-	x2 := x1 + tmp^.w;
-	y2 := y1 + tmp^.h;
-	
-	dispose(tmp);
+	x1 := tmp.x;
+	y1 := tmp.y;
+	x2 := x1 + tmp.w;
+	y2 := y1 + tmp.h;
 end;
 
 
