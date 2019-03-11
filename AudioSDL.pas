@@ -8,7 +8,7 @@ arising from the use of this software.
 
 Permission is granted to anyone to use this software for any purpose,
 including commercial applications, and to alter it and redistribute it
-freely, subject to the following restrictions:
+freely, subject to the following restrictions : 
 
     1. The origin of this software must not be misrepresented; you must not
        claim that you wrote the original software. If you use this software
@@ -18,88 +18,142 @@ freely, subject to the following restrictions:
        misrepresented as being the original software.
     3. This notice may not be removed or altered from any source distribution.
 }
-Unit AudioSDL;
+
+unit AudioSDL;
+
 interface
-Uses SDL2_mixer;
-Const
-  {channels for initaudio}
-  mono=1;
-  stereo=2;
-  {channel for playEffect}
-  all=-1;
-Procedure InitAudio(channels:word);
-Procedure DoneAudio;
-Function LoadMusic(path:ansistring):pointer;{WAVE,MOD,MIDI,OGG,MP3,FLAC}
-Function LoadSound(path:ansistring):pointer;{WAVE AIFF RIFF OGG VOC}
-Procedure PlayMusic(p:pointer; countplays:word);
-Function PlayingMusic:boolean;
-Procedure PauseMusic;
-Function PausedMusic:boolean;
-Procedure ResumeMusic;
-Procedure StopMusic;
-Procedure PlaySound(p:pointer; channel:integer; countplays:word);
-Procedure SetVolumeAll(c:integer);
-Procedure SetMusicPosition(c:double);
+
+uses
+	SDL2_mixer;
+
+const
+
+	// channels for initaudio
+	
+	mono = 1;
+	stereo = 2;
+	
+	// channel for playEffect
+	all = -1;
+
+
+procedure InitAudio (channels : word);
+procedure DoneAudio;
+
+function LoadMusic (path : ansistring) : pointer;{WAVE,MOD,MIDI,OGG,MP3,FLAC}
+function LoadSound (path : ansistring) : pointer;{WAVE AIFF RIFF OGG VOC}
+
+procedure PlayMusic (p : pointer; countplays : word);
+function PlayingMusic : boolean;
+procedure PauseMusic;
+function PausedMusic : boolean;
+procedure ResumeMusic;
+procedure StopMusic;
+
+procedure PlaySound (p : pointer; channel : integer; countplays : word);
+
+procedure SetVolumeAll (c : integer);
+procedure SetMusicPosition (c : double);
+
+
 implementation
-Procedure InitAudio(channels:word);
- begin
-  if mix_openaudio(44100,MIX_DEFAULT_FORMAT,channels,2048)<0 then
-   writeln('Error while init audio');
- end;
-Procedure DoneAudio;
- begin
-  mix_closeaudio;
- end;
-Function loadmusic(path:ansistring):pointer;
- var p:pointer;
- begin
-  p:=mix_loadmus(pchar(path));
-  if p=nil then writeln('Error while loading '+path);
-  loadmusic:=p;
- end;
-function loadsound(path:ansistring):pointer;
- begin
-  loadsound:=mix_loadwav(pchar(path));
- end;
-Procedure PlayMusic(p:pointer; countplays:word);
- begin
-  mix_playmusic(p,countplays);
- end;
-Function PlayingMusic:boolean;
- begin
-  playingmusic:=boolean(mix_playingmusic);
- end;
-Procedure PauseMusic;
- begin
-  Mix_PauseMusic;
- end;
-Function PausedMusic:boolean;
- begin
-  pausedmusic:=boolean(mix_pausedmusic);
- end; 
-Procedure ResumeMusic;
- begin
-  mix_resumemusic;
- end;
-Procedure StopMusic;
- begin
-  Mix_haltMusic;
- end;
-Procedure Playsound(p:pointer; channel:integer; countplays:word);
- begin
-  mix_playchannel(channel,p,countplays);
- end;
-Procedure SetVolumeAll(c:integer);
- begin
-  if c>mix_max_volume then c:=mix_max_volume;
-  if c<0 then c:=0;
-  mix_volume(all,c);
-  mix_volumemusic(c);
- end; 
-Procedure SetMusicPosition(c:double);
- begin
-  mix_rewindmusic;
-  if mix_setmusicposition(c)<>0 then writeln(mix_geterror)
- end;
+
+
+procedure InitAudio (channels : word);
+begin
+	if (mix_openaudio(44100, MIX_DEFAULT_FORMAT, channels, 2048) < 0) then
+		writeln('Error while initializing audio');
+end;
+
+
+procedure DoneAudio;
+begin
+	mix_closeaudio;
+end;
+
+
+function loadmusic (path : ansistring) : pointer;
+var
+	p : pointer;
+begin
+	p := mix_loadmus(pchar(path));
+	
+	if (p = nil) then 
+		writeln('Error while loading ' + path);
+	
+	loadmusic := p;
+end;
+
+
+function loadsound (path : ansistring) : pointer;
+begin
+	loadsound := mix_loadwav(pchar(path));
+end;
+
+
+procedure PlayMusic(p : pointer; countplays : word);
+begin
+	mix_playmusic(p, countplays);
+end;
+
+
+function PlayingMusic : boolean;
+begin
+	playingmusic := boolean(mix_playingmusic);
+end;
+
+
+procedure PauseMusic;
+begin
+	Mix_PauseMusic;
+end;
+
+
+function PausedMusic : boolean;
+begin
+	pausedmusic := boolean(mix_pausedmusic);
+end;
+
+
+procedure ResumeMusic;
+begin
+	mix_resumemusic;
+end;
+
+
+procedure StopMusic;
+begin
+	Mix_haltMusic;
+end;
+
+
+procedure Playsound (p : pointer; channel : integer; countplays : word);
+begin
+	mix_playchannel(channel, p, countplays);
+end;
+
+
+procedure SetVolumeAll (c : integer);
+begin
+	if (c > mix_max_volume) then
+		c := mix_max_volume;
+	
+	if (c < 0) then
+		c := 0;
+	
+	mix_volume(all, c);
+	mix_volumemusic(c);
+end;
+
+
+procedure SetMusicPosition (c : double);
+begin
+	mix_rewindmusic;
+	
+	if (mix_setmusicposition(c) <> 0) then
+		writeln(mix_geterror);
+end;
+
+
 begin
 end.

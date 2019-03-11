@@ -174,8 +174,8 @@ function LoadImage (s : ansistring) : pointer; {Load new formats of images (JPG,
 function LoadImage1 (s : ansistring) : pointer; {For backward compatibility}
 
 {PutImage}
-procedure PutImage1(x,y:integer; a:pointer);{Draw it}
-procedure PutImage(x,y:integer;p:pimg;type_:byte);
+procedure PutImage1 (x, y : integer; a : pointer); {Draw it}
+procedure PutImage (x, y : integer; p : pimg; type_ : byte);
 
 // type_:
 // normalput - draw plainly
@@ -279,15 +279,15 @@ implementation
 
 const
 {$ifdef ENDIAN_BIG}
-	rmask:longword=$ff000000;
-	gmask:longword=$00ff0000;
-	bmask:longword=$0000ff00;
-	amask:longword=$000000ff;
+	rmask:longword = $ff000000;
+	gmask:longword = $00ff0000;
+	bmask:longword = $0000ff00;
+	amask:longword = $000000ff;
 {$else}
-	rmask:longword=$000000ff;
-	gmask:longword=$0000ff00;
-	bmask:longword=$00ff0000;
-	amask:longword=$ff000000;
+	rmask:longword = $000000ff;
+	gmask:longword = $0000ff00;
+	bmask:longword = $00ff0000;
+	amask:longword = $ff000000;
 {$endif}
 
 var
@@ -384,7 +384,7 @@ begin
 end;
 
 
-procedure SetUserCursor(pathToCursor:ansistring; hotX,hotY:integer);
+procedure SetUserCursor (pathToCursor : ansistring; hotX, hotY : integer);
 var
 	surf : pSDL_Surface;
 begin
@@ -854,7 +854,7 @@ begin
 end;
 
 
-function LoadImage(s:ansistring):pointer;
+function LoadImage (s : ansistring) : pointer;
 var
 	q : psdl_surface;
 	w : psdl_texture;
